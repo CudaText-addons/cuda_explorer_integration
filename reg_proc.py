@@ -42,11 +42,16 @@ ShellValue = '"%s" "%%1"' % ExePath
 
 def apply_shell_extension(en):
     if en:
-        return set_reg(RegKey1, '', ShellValue)
+        res = set_reg(RegKey1, '', ShellValue)
     else:
-        v1 = del_reg(RegKey1)
-        v2 = del_reg(RegKey0)
-        return v1 and v2
+        del_reg(RegKey1)
+        del_reg(RegKey0)
+        res = True
+        
+    if res:
+    	return True
+    else:
+    	raise PermissionError
  
 
 def is_shell_extension_enabled():
@@ -67,7 +72,10 @@ def apply_file_assoc(ext, en):
         v1 = set_reg('.'+ext, '', RegKeyAppName)
         v2 = set_reg(RegKeyAppName, '', NewDoc)
         v3 = set_reg(RegKeyAppOpen, '', ShellValue)
-        return v1 and v2 and v3
+        if v1 and v2 and v3:
+        	return True
+        else:
+        	raise PermissionError
     else:
         #to restore, set "HKEY_CLASSES_ROOT\.txt\@" to "txtfile"
         val = get_reg('.'+ext, '')

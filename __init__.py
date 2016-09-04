@@ -14,8 +14,11 @@ class Command:
         if res is None: return
         (op_menu, op_txt, op_ini, op_proj, op_sess) = res
 
-        if old_menu!=op_menu: apply_shell_extension(op_menu)
-        if old_txt!=op_txt: apply_file_assoc('txt', op_txt)
-        if old_ini!=op_ini: apply_file_assoc('ini', op_ini)
-        if old_proj!=op_proj: apply_file_assoc('cuda-proj', op_proj)
-        if old_sess!=op_sess: apply_file_assoc('cuda-session', op_sess)
+        try:
+            if old_menu!=op_menu: apply_shell_extension(op_menu)
+            if old_txt!=op_txt: apply_file_assoc('txt', op_txt)
+            if old_ini!=op_ini: apply_file_assoc('ini', op_ini)
+            if old_proj!=op_proj: apply_file_assoc('cuda-proj', op_proj)
+            if old_sess!=op_sess: apply_file_assoc('cuda-session', op_sess)
+        except:
+            msg_box('Cannot write registry key. Try to run program as Administrator.', MB_OK+MB_ICONWARNING)
