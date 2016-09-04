@@ -2,11 +2,11 @@ import os
 from cudatext import *
 
 try:
-	import winreg
-	hkey = winreg.HKEY_CLASSES_ROOT
+    import winreg
+    hkey = winreg.HKEY_CLASSES_ROOT
 except:
-	winreg = None
-	hkey = None
+    winreg = None
+    hkey = None
 
 
 def set_reg(keypath, keyname, keyvalue):
@@ -16,9 +16,9 @@ def set_reg(keypath, keyname, keyvalue):
         winreg.SetValueEx(registry_key, keyname, 0, winreg.REG_SZ, keyvalue)
         winreg.CloseKey(registry_key)
         return True
-    except WindowsError:
+    except:
         return False
-        
+
 
 def get_reg(keypath, keyname):
     try:
@@ -27,13 +27,13 @@ def get_reg(keypath, keyname):
         winreg.CloseKey(registry_key)
         return value
     except WindowsError:
-        return None
-        
-                
+        return ''
+
+
 def del_reg(keypath):
-    winreg.DeleteKey(hkey, keypath) 
-    
-    
+    winreg.DeleteKey(hkey, keypath)
+
+
 RegKey0 = r'*\shell\CudaText'
 RegKey1 = RegKey0 + r'\command'
 
@@ -52,12 +52,12 @@ def apply_shell_extension(en):
         del_reg(RegKey1)
         del_reg(RegKey0)
         res = True
-        
+
     if res:
-    	return True
+        return True
     else:
-    	raise PermissionError
- 
+        raise PermissionError
+
 
 def is_shell_extension_enabled():
     val = get_reg(RegKey1, '')
@@ -78,9 +78,9 @@ def apply_file_assoc(ext, en):
         v2 = set_reg(RegKeyAppName, '', NewDoc)
         v3 = set_reg(RegKeyAppOpen, '', ShellValue)
         if v1 and v2 and v3:
-        	return True
+            return True
         else:
-        	raise PermissionError
+            raise PermissionError
     else:
         #to restore, set "HKEY_CLASSES_ROOT\.txt\@" to "txtfile"
         val = get_reg('.'+ext, '')
@@ -94,7 +94,7 @@ def apply_file_assoc(ext, en):
 
 
 def is_file_assoc_enabled(ext):
-  	v1 = get_reg('.'+ext, '') == RegKeyAppName
-  	val = get_reg(RegKeyAppOpen, '')
-  	v2 = bool(val) and (val.upper() == ShellValue.upper())
-  	return v1 and v2
+    v1 = get_reg('.'+ext, '') == RegKeyAppName
+    val = get_reg(RegKeyAppOpen, '')
+    v2 = bool(val) and (val.upper() == ShellValue.upper())
+    return v1 and v2
