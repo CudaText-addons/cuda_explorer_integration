@@ -16,7 +16,7 @@ def set_reg(keypath, keyname, keyvalue):
         winreg.SetValueEx(registry_key, keyname, 0, winreg.REG_SZ, keyvalue)
         winreg.CloseKey(registry_key)
         return True
-    except:
+    except WindowsError:
         return False
 
 
