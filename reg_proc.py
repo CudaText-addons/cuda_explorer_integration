@@ -1,6 +1,10 @@
 import os
-import winreg
 from cudatext import *
+
+try:
+	import winreg
+except:
+	winreg = None
 
 hkey = winreg.HKEY_CLASSES_ROOT
 
