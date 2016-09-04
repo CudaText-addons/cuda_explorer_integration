@@ -3,10 +3,11 @@ from cudatext import *
 
 try:
 	import winreg
+	hkey = winreg.HKEY_CLASSES_ROOT
 except:
 	winreg = None
+	hkey = None
 
-hkey = winreg.HKEY_CLASSES_ROOT
 
 def set_reg(keypath, keyname, keyvalue):
     try:
