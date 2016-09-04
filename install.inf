@@ -1,0 +1,12 @@
+[info]
+title=Explorer Integration
+desc=For Windows: allows to add Explorer context menu item for CudaText, to associate CudaText with file-extensions .txt .ini
+type=cudatext-plugin
+subdir=cuda_explorer_integration
+homepage=
+
+[item1]
+section=commands
+caption=Explorer Integration
+method=dialog
+
