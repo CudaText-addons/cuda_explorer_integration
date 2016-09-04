@@ -36,6 +36,7 @@ def del_reg(keypath):
 
 RegKey0 = r'*\shell\CudaText'
 RegKey1 = RegKey0 + r'\command'
+RegKeyList = 'CudaText_List'
 
 RegKeyAppName = 'CudaText'
 RegKeyAppOpen = RegKeyAppName + r'\Shell\Open\Command'
