@@ -1,6 +1,7 @@
 
 2016.09.05
 + option for extension list
++ file port.py for Synwrite
 
 2016.09.04
 initial
