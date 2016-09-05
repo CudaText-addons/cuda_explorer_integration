@@ -1,5 +1,4 @@
-import os
-from cudatext import *
+from .port import *
 
 try:
     import winreg
@@ -34,16 +33,15 @@ def del_reg(keypath):
     winreg.DeleteKey(hkey, keypath)
 
 
-RegKey0 = r'*\shell\CudaText'
+RegKey0 = r'*\shell\%s'%APP_NAME
 RegKey1 = RegKey0 + r'\command'
-RegKeyList = 'CudaText_List'
+RegKeyList = '%s_List'%APP_NAME
 
-RegKeyAppName = 'CudaText'
+RegKeyAppName = APP_NAME
 RegKeyAppOpen = RegKeyAppName + r'\Shell\Open\Command'
-RegKeyBak = 'CudaText_bak'
+RegKeyBak = '%s_bak'%APP_NAME
 
-ExePath = os.path.join(app_path(APP_DIR_EXE), 'cudatext.exe')
-ShellValue = '"%s" "%%1"' % ExePath
+ShellValue = '"%s" "%%1"' % exe_path
 
 
 def apply_shell_extension(en):
