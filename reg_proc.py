@@ -8,6 +8,32 @@ except:
     hkey = None
 
 
+def add_reg(name, descr, cmd):
+    try:
+        if descr == "":
+            descr = name
+        #associate with both any files & Folders (right click on folder is neat !)
+        for item in ["*", "Directory"]:
+            key = winreg.CreateKey(winreg.HKEY_CLASSES_ROOT, r'%s\shell\%s' % (item, name))
+            key2 = winreg.CreateKey(winreg.HKEY_CLASSES_ROOT, r'%s\shell\%s\command' % (item, name))
+            winreg.SetValueEx(key, "", None, winreg.REG_SZ, "%s " % descr)
+            #icon will take binary icon from cmd
+            winreg.SetValueEx(key, "Icon", None, winreg.REG_SZ, cmd)
+            #put Cuda at top of context-menu
+            #winreg.SetValueEx(key, "Position", None, winreg.REG_SZ, "Top")
+            winreg.SetValueEx(key, "", None, winreg.REG_SZ, "%s " % descr)
+            
+            if item == "*":
+                winreg.SetValueEx(key2, "", None, winreg.REG_SZ, '"%s" "%%1"' % cmd)
+            if item == "Directory":
+                winreg.SetValueEx(key2, "", None, winreg.REG_SZ, '"%s" "%%V"' % cmd)
+            winreg.CloseKey(key2)
+            winreg.CloseKey(key)
+            
+        return True
+    except WindowsError:
+        return False
+
 def set_reg(keypath, keyname, keyvalue):
     try:
         winreg.CreateKey(hkey, keypath)
@@ -18,7 +44,6 @@ def set_reg(keypath, keyname, keyvalue):
     except WindowsError:
         return False
 
-
 def get_reg(keypath, keyname):
     try:
         registry_key = winreg.OpenKey(hkey, keypath, 0, winreg.KEY_READ)
@@ -28,28 +53,22 @@ def get_reg(keypath, keyname):
     except WindowsError:
         return ''
 
-
-def del_reg(keypath):
-    winreg.DeleteKey(hkey, keypath)
-
-
-RegKey0 = r'*\shell\%s'%APP_NAME
-RegKey1 = RegKey0 + r'\command'
+RegKeyShell = r'*\shell'
+RegKeyFiles = r'*\shell\%s'%APP_NAME
+RegKeyFolders = r'Directory\shell\%s'%APP_NAME
+RegKey1 = RegKeyFiles + r'\command'
 RegKeyList = '%s_List'%APP_NAME
-
 RegKeyAppName = APP_NAME
-RegKeyAppOpen = RegKeyAppName + r'\Shell\Open\Command'
+RegKeyAppOpen = RegKeyAppName + r'\shell\Open\command'
 RegKeyBak = '%s_bak'%APP_NAME
-
 ShellValue = '"%s" "%%1"' % exe_path
-
 
 def apply_shell_extension(en):
     if en:
-        res = set_reg(RegKey1, '', ShellValue)
+        res = add_reg(APP_NAME, 'Open with &CudaText', exe_path)
     else:
-        del_reg(RegKey1)
-        del_reg(RegKey0)
+        winreg.DeleteKey(hkey, RegKeyFiles)
+        winreg.DeleteKey(hkey, RegKeyFolders)
         res = True
 
     if res:
@@ -57,11 +76,9 @@ def apply_shell_extension(en):
     else:
         raise PermissionError
 
-
 def is_shell_extension_enabled():
     val = get_reg(RegKey1, '')
     return bool(val) and (val.upper() == ShellValue.upper())
-
 
 def apply_file_assoc(ext, en):
     if en:
@@ -90,7 +107,6 @@ def apply_file_assoc(ext, en):
         else:
             del_reg('.'+ext)
         return True
-
 
 def is_file_assoc_enabled(ext):
     v1 = get_reg('.'+ext, '') == RegKeyAppName
