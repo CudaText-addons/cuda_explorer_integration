@@ -12,7 +12,6 @@ def add_reg(name, descr, cmd):
     try:
         if descr == "":
             descr = name
-        import winreg as winreg
         #associate with both any files & Folders (right click on folder is neat !)
         for item in ["*", "Directory"]:
             key = winreg.CreateKey(winreg.HKEY_CLASSES_ROOT, r'%s\shell\%s' % (item, name))
