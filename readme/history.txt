@@ -1,4 +1,9 @@
 
+2018.05.30
++ added association of CudaText with folders too
+* renamed context menu item to "Open in CudaText"
++ added icon to ctx menu item
+
 2016.09.05
 + option for extension list
 + file port.py for Synwrite
