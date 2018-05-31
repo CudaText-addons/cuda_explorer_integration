@@ -4,6 +4,7 @@ desc=For Windows: allows to add/remove Explorer context menu item for CudaText, 
 type=cudatext-plugin
 subdir=cuda_explorer_integration
 homepage=https://github.com/CudaText-addons/cuda_explorer_integration
+os=win
 
 [item1]
 section=commands
