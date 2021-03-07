@@ -19,7 +19,7 @@ def dialog_config(op_menu, op_txt, op_ini, op_proj, op_sess, op_list):
         +[c1.join(['type=check', 'pos=6,112,500,0', 'cap=Associate %s with "%s" files'%(APP_NAME, EXT_SESS), 'val='+('1' if op_sess else '0')])]
         +[c1.join(['type=label', 'pos=6,136,200,0', 'cap=&Also register extensions (no dots, one per line, lower case):'])]
         +[c1.join(['type=memo', 'pos=6,156,200,270', 'val='+'\t'.join(sorted(op_list))])]
-        +[c1.join(['type=button', 'pos=200,280,300,0', 'cap=&OK', 'props=1'])]
+        +[c1.join(['type=button', 'pos=200,280,300,0', 'cap=&OK', 'ex0=1'])]
         +[c1.join(['type=button', 'pos=306,280,402,0', 'cap=Cancel'])]
     )
 
