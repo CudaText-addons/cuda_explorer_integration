@@ -67,7 +67,9 @@ def apply_shell_extension(en):
     if en:
         res = add_reg(APP_NAME, 'Open with &CudaText', exe_path)
     else:
+        winreg.DeleteKey(hkey, RegKeyFiles + r'\command')
         winreg.DeleteKey(hkey, RegKeyFiles)
+        winreg.DeleteKey(hkey, RegKeyFolders + r'\command')
         winreg.DeleteKey(hkey, RegKeyFolders)
         res = True
 
@@ -105,7 +107,7 @@ def apply_file_assoc(ext, en):
         if bak:
             set_reg('.'+ext, '', bak)
         else:
-            del_reg('.'+ext)
+            winreg.DeleteKey(hkey, '.'+ext)
         return True
 
 def is_file_assoc_enabled(ext):
