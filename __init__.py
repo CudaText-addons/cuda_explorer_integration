@@ -2,20 +2,23 @@ import os
 from .port import *
 from .dlg import *
 from .reg_proc import *
+from cudax_lib import get_translation
+
+_   = get_translation(__file__)  # I18N
 
 class Command:
     def dialog(self):
         if os.name!='nt':
-        	msg_error_func('This plugin is for Windows only')
-        	return
-    
+            msg_error_func(_('This plugin is for Windows only'))
+            return
+
         old_menu = is_shell_extension_enabled()
         old_txt = is_file_assoc_enabled('txt')
         old_ini = is_file_assoc_enabled('ini')
         old_proj = is_file_assoc_enabled(EXT_PROJ)
         old_sess = is_file_assoc_enabled(EXT_SESS)
         old_list = get_reg(RegKeyList, '').split(' ')
-    
+
         res = dialog_config(old_menu, old_txt, old_ini, old_proj, old_sess, old_list)
         if res is None: return
         (op_menu, op_txt, op_ini, op_proj, op_sess, op_list) = res
@@ -41,6 +44,6 @@ class Command:
                     if not s in old_list:
                         #print('register ext:', s)
                         apply_file_assoc(s, True)
-                    
+
         except:
             msg_warn_func('Cannot write registry key.\nTry to run program as Administrator.')
